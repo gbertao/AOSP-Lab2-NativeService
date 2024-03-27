@@ -1,0 +1,9 @@
+[submodule "platform_build"]
+	path = platform_build
+	url = https://github.com/gbertao/platform_build
+[submodule "platform_frameworks_base"]
+	path = platform_frameworks_base
+	url = https://github.com/gbertao/platform_frameworks_base
+[submodule "aosp-mirror_platform_system_sepolicy"]
+	path = aosp-mirror_platform_system_sepolicy
+	url = https://github.com/gbertao/aosp-mirror_platform_system_sepolicy
