@@ -1,0 +1,7 @@
+service hellogiod /system/bin/HelloGio
+	class core
+	user system
+	group system
+
+on boot
+	start hellogiod

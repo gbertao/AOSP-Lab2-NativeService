@@ -1,0 +1,9 @@
+cc_binary {
+    name: "HelloGio",
+    srcs: ["hellogio.cpp"],
+    shared_libs: [
+        "libutils",
+        "liblog",
+    ],
+    init_rc: ["hellogio.rc"],
+}

@@ -1,0 +1,34 @@
+#! /usr/bin/bash
+
+echo "[+] Starting configure"
+
+echo "[+] Moving source to libs"
+# Move binary source to frameworks/base/libs/
+MOD_PATH="platform_frameworks_base/libs/giovanni"
+if [[ ! -d $MOD_PATH ]]; then
+	mkdir -p $MOD_PATH
+	mv giovanni $MOD_PATH
+fi
+echo "[+] Done"
+
+echo "[+] Adding module to base_system.mk"
+# Add module to base_system.mk
+BASEMK_PATH="platform_build/target/product/base_system.mk"
+if [[ ! $(grep HelloGio $BASEMK_PATH) ]]; then
+	LINE=$(grep -no PRODUCT_PACKAGES ${BASEMK_PATH} | head -1 | cut -f1 -d:)
+	LINE=$(($LINE-1))
+	sed -n -i "${LINE}aPRODUCT_PACKAGES += HelloGio" ${BASEMK_PATH}
+fi
+
+echo "[+] Create selinux domain"
+SEVD_PATH="aosp-mirror_platform_system_sepolicy/vendor"
+if [[ ! $(grep hellogiod $SEVD_PATH/file_contexts) ]]; then
+	sed -n -i "1i#############################" $SEVD_PATH/file_contexts
+	sed -n -i "1a# My daemon" $SEVD_PATH/file_contexts
+	sed -n -i "2a#" $SEVD_PATH/file_contexts
+	sed -n -i "3a /system/bin/HelloGio         u:object_r:hellogiod_exec:s0" $SEVD_PATH/file_contexs
+fi
+if [[ ! -f $SEVD_PATH/hellogiod.te ]]; then
+	mv hellogiod.te $SEVD_PATH/hellogiod.te
+fi
+echo "[+] Done"
